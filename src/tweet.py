@@ -3,7 +3,7 @@ import yaml
 
 def tweet(text):
 
-    with open('config.yml', 'r') as file:
+    with open('src/config.yml', 'r') as file:
         config = yaml.safe_load(file)
         
     bearer_token = config['twitter']['bearer-token']

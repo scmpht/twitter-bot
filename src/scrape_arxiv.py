@@ -26,7 +26,7 @@ def search_bioarxiv(server, start_date, end_date, cursor=0):
     
     
 def scrape_arxiv(searches, last_search, end_date):
-    past_papers = pd.read_csv("../data/scraped_papers.csv")
+    past_papers = pd.read_csv("data/scraped_papers.csv")
     scraped_papers = pd.DataFrame(search_bioarxiv('biorxiv', last_search, end_date))
     relevant_papers = scraped_papers.iloc[:0]
 
