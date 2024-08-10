@@ -2,6 +2,8 @@
 config.yml
 *.ipynb
 *.csv
+twitter-bot.app/
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
