@@ -3,6 +3,7 @@ import requests
 from datetime import datetime, timedelta
 from scrape_arxiv import scrape_arxiv
 from tweet import tweet
+from generate_summary import generate_summary
 
 
 def main(last_search, end_date):
@@ -27,7 +28,8 @@ def main(last_search, end_date):
     # Tweet the title and DOI
     if relevant_papers.shape[0] > 0:
         for _, paper in relevant_papers.iterrows():
-            tweet(f"{paper['title']}: https://doi.org/{paper['doi']}")
+            summary = generate_summary(paper['abstract'])
+            tweet(f"{summary}\nhttps://doi.org/{paper['doi']}")
     else:
         print("No new papers.")
 
