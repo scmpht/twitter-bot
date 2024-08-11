@@ -10,7 +10,6 @@ prompt = config['openai']['prompt']
 client = OpenAI(api_key=api_key)
 
 def generate_summary(abstract):
-    client = OpenAI(api_key=api_key)
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages = [
