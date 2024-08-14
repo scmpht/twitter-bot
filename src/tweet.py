@@ -1,5 +1,15 @@
 import tweepy
 import yaml
+import requests
+
+
+def shorten_url(long_url):
+    url = 'http://tinyurl.com/api-create.php?url='
+    response = requests.get(url+long_url)
+    short_url = response.text
+    
+    return short_url
+
 
 def tweet(text):
 
