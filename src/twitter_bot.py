@@ -77,6 +77,8 @@ def main(last_search, end_date):
                 relevant = verify_tweet(paper['title'], content)
                 if 'yes' in relevant.lower():
                     tweet(content)
+                else:
+                    continue
             else:
                 print(f"Size of tweet exceeded max: {len(content)}\n{paper['link']}\n{content}")
                 continue
