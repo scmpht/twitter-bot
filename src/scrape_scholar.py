@@ -59,7 +59,7 @@ def scrape_text(url):
         if t.parent.name not in blacklist:
             output += '{} '.format(t)
             
-    return output
+    return output[:100000]
 
 
     
