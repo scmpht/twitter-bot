@@ -3,7 +3,7 @@ import requests
 from datetime import datetime, timedelta
 from scrape_arxiv import scrape_arxiv
 from tweet import tweet, shorten_url
-from generate_summary import generate_summary, get_abstract
+from generate_summary import generate_summary, get_abstract, verify_tweet
 from scrape_scholar import scholar_search, scrape_text
 
 
@@ -74,7 +74,9 @@ def main(last_search, end_date):
             link = shorten_url(paper['link'])
             content = f"{summary} {link}"
             if len(content) <= 280:
-                tweet(content)
+                relevant = verify_tweet(paper['title'], content)
+                if 'yes' in relevant.lower():
+                    tweet(content)
             else:
                 print(f"Size of tweet exceeded max: {len(content)}\n{paper['link']}\n{content}")
                 continue
@@ -85,6 +87,7 @@ def main(last_search, end_date):
     past_papers = pd.read_csv("data/scholar_papers.csv")
     past_papers = pd.concat([relevant_papers, past_papers])
     past_papers = past_papers[~past_papers['result_id'].duplicated()]
+    past_papers = past_papers[~past_papers['title'].duplicated()]
     past_papers.to_csv("data/scholar_papers.csv", index=False)
     
     
