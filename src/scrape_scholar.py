@@ -32,6 +32,7 @@ def scholar_search(searches):
     
   relevant_papers = relevant_papers[~relevant_papers['result_id'].duplicated()]
   relevant_papers = relevant_papers[~relevant_papers['result_id'].isin(past_papers['result_id'])]
+  relevant_papers = relevant_papers[~relevant_papers['title'].isin(past_papers['title'])]
 
   return relevant_papers
 
