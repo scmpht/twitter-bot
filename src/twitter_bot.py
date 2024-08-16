@@ -78,6 +78,7 @@ def main(last_search, end_date):
                 if 'yes' in relevant.lower():
                     tweet(content)
                 else:
+                    print(f"tweet not relevant to title: {content}\n{paper['title']}")
                     continue
             else:
                 print(f"Size of tweet exceeded max: {len(content)}\n{paper['link']}\n{content}")
