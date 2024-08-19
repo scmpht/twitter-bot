@@ -35,7 +35,7 @@ def main(last_search, end_date):
             if len(content) <= 280:
                 tweet(content)
             else:
-                print(f"Size of tweet exceeded max: {len(content)}\n{paper['link']}\n{content}")
+                print(f"Size of tweet exceeded max: {len(content)}\n{paper['doi']}\n{content}")
 
     else:
         print("No new bioRxiv papers.")
