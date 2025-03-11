@@ -3,7 +3,7 @@ import requests
 from datetime import datetime, timedelta
 from scrape_arxiv import scrape_arxiv
 from tweet import tweet, shorten_url
-from generate_summary import generate_summary, get_abstract, verify_tweet
+# from generate_summary import generate_summary, get_abstract, verify_tweet
 from scrape_scholar import scholar_search, scrape_text
 
 
@@ -29,9 +29,12 @@ def main(last_search, end_date):
     # Tweet a summary and DOI
     if relevant_papers.shape[0] > 0:
         for _, paper in relevant_papers.iterrows():
-            summary = generate_summary(paper['abstract'])
+            # summary = generate_summary(paper['abstract'])
+            title = paper['title']
+            if len(title) >= 252:
+                title = title[:249] + "..."
             link = shorten_url(f"https://doi.org/{paper['doi']}")
-            content = f"{summary} {link}"
+            content = f"{title} {link}"
             if len(content) <= 280:
                 tweet(content)
             else:
@@ -62,24 +65,28 @@ def main(last_search, end_date):
             
             if "proquest" in paper['link']:
                 continue
-            web_text = scrape_text(paper['link'])
-        
-            abstract = get_abstract(web_text)
-            summary = generate_summary(abstract)
             
-            if "**skip**" in summary:
-                print("Couldn't identify abstract.")
-                continue
+            # web_text = scrape_text(paper['link'])
+            # abstract = get_abstract(web_text)
+            # summary = generate_summary(abstract)
+            
+            title = paper['title']
+            if len(title) >= 252:
+                title = title[:249] + "..."
+            
+            # if "**skip**" in summary:
+            #     print("Couldn't identify abstract.")
+            #     continue
             
             link = shorten_url(paper['link'])
-            content = f"{summary} {link}"
+            content = f"{title} {link}"
             if len(content) <= 280:
-                relevant = verify_tweet(paper['title'], content)
-                if 'yes' in relevant.lower():
-                    tweet(content)
-                else:
-                    print(f"tweet not relevant to title: {content}\n{paper['title']}")
-                    continue
+                # relevant = verify_tweet(paper['title'], content)
+                # if 'yes' in relevant.lower():
+                tweet(content)
+                # else:
+                #     print(f"tweet not relevant to title: {content}\n{paper['title']}")
+                #     continue
             else:
                 print(f"Size of tweet exceeded max: {len(content)}\n{paper['link']}\n{content}")
                 continue
