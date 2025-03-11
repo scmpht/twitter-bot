@@ -9,7 +9,7 @@ from scrape_scholar import scholar_search, scrape_text
 
 def main(last_search, end_date):
 
-    ### BioRxiv
+    ## BioRxiv
     # lists = OR, tuples = AND
     # Each dictionary is a seperate search
     biorxiv_searches = [
@@ -22,6 +22,9 @@ def main(last_search, end_date):
             "Abstract": ["omics", ("therapy", "resist")]
         }
     ]
+    
+    # load previously posted papers
+    past_papers = pd.read_csv("data/scraped_papers.csv")
 
     # Scrape papers from bioRxiv
     relevant_papers = scrape_arxiv(biorxiv_searches, last_search, end_date)
@@ -29,6 +32,8 @@ def main(last_search, end_date):
     # Tweet a summary and DOI
     if relevant_papers.shape[0] > 0:
         for _, paper in relevant_papers.iterrows():
+            if paper['doi'] in past_papers['doi']:
+                continue
             # summary = generate_summary(paper['abstract'])
             title = paper['title']
             if len(title) >= 252:
@@ -62,6 +67,9 @@ def main(last_search, end_date):
     # Extract abstract, and tweet with link
     if relevant_papers.shape[0] > 0:
         for _, paper in relevant_papers.iterrows():
+            
+            if paper['title'] in past_papers['title']:
+                continue
             
             if "proquest" in paper['link']:
                 continue
